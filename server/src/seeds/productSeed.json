@@ -1,0 +1,43 @@
+[
+  {
+    "title": "Mughal Carved Solid Walnut Bed",
+    "slug": "mughal-carved-solid-walnut-bed",
+    "shortDescription": "A masterpiece of Chinioti craftsmanship, featuring intricate hand-carved floral motifs in solid walnut wood.",
+    "fullDescription": "Bring the grandeur of the Mughal era to your master suite. Crafted by master artisans in Chiniot, this bed is made entirely from kiln-dried solid walnut wood, ensuring it lasts for generations...",
+    "category": "65ab... (ObjectId)",
+    "basePricePKR": 285000,
+    "discountedPricePKR": 250000,
+    "thumbnail": "https://res.cloudinary.com/.../walnut-bed-main.jpg",
+    "images": ["url1", "url2", "url3"],
+    "variants": [
+      {
+        "color": "Dark Walnut",
+        "material": "Solid Walnut Wood",
+        "size": "King",
+        "stock": 3,
+        "sku": "BD-WAL-KING-01"
+      }
+    ],
+    "tags": ["luxury", "chiniot", "wooden bed", "carved"],
+    "isFeatured": true,
+    "isBestSeller": true
+  },
+  {
+    "title": "Hala Blue Pottery Accent Vase",
+    "slug": "hala-blue-pottery-accent-vase",
+    "shortDescription": "Authentic hand-painted ceramic vase from Hala, Sindh.",
+    "fullDescription": "Add a touch of vibrant Pakistani heritage to your console table. This vase features traditional geometric and floral Kashi Kari patterns...",
+    "category": "65ac... (ObjectId)",
+    "basePricePKR": 8500,
+    "thumbnail": "https://res.cloudinary.com/.../hala-vase.jpg",
+    "variants": [
+      {
+        "color": "Cobalt Blue",
+        "material": "Ceramic",
+        "stock": 15,
+        "sku": "DC-HAL-VSE-01"
+      }
+    ],
+    "tags": ["decor", "hala", "pottery", "hand-painted"]
+  }
+]

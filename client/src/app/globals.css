@@ -1,0 +1,31 @@
+/* 1. Core Tailwind v4 Engine */
+@import "tailwindcss";
+@config "../../tailwind.config.ts"; /* This tells v4 to use your existing config file */
+
+/* 2. Global Theme Variables */
+:root {
+  --background: #FAFAFA; /* luxury-white */
+  --foreground: #212121; /* charcoal */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* 3. Custom Utilities & Accessibility */
+@layer utilities {
+  
+  /* Premium, explicit focus states triggered only via keyboard navigation (Tab) */
+  .focus-ring-premium:focus-visible {
+    outline: 2px solid #4E342E; /* walnut-brown */
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgba(78, 52, 46, 0.15);
+  }
+  
+  /* Removes default browser outlines for mouse clicks to maintain luxury aesthetic */
+  .focus-ring-premium:focus {
+    outline: none;
+  }
+  
+}
