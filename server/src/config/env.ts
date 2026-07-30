@@ -1,6 +1,6 @@
-
 import dotenv from 'dotenv';
 dotenv.config();
+
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: Number(process.env.PORT) || 5000,
@@ -14,7 +14,7 @@ const env = {
   EMAIL_PORT: Number(process.env.EMAIL_PORT) || 587,
   EMAIL_USER: process.env.EMAIL_USER,
   EMAIL_PASS: process.env.EMAIL_PASS,
-  EMAIL_FROM: process.env.EMAIL_FROM || 'noreply@Homedecor.pk',
+  EMAIL_FROM: process.env.EMAIL_FROM || 'noreply@homedecore.homes',
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
   JC_MERCHANT_ID: process.env.JC_MERCHANT_ID,
   JC_PASSWORD: process.env.JC_PASSWORD,
@@ -22,12 +22,17 @@ const env = {
   JC_ENDPOINT: process.env.JC_ENDPOINT || 'https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/',
 };
 
-// Fail fast on missing secrets
+// Fail-fast environment variable validation with clear error logging for Render/Vercel deployments
 const required = ['MONGO_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'];
-required.forEach(key => {
-  if (!env[key as keyof typeof env]) {
-    throw new Error(`Missing required env variable: ${key}`);
+const missing = required.filter((key) => !env[key as keyof typeof env]);
+
+if (missing.length > 0) {
+  console.error('\n❌ [DEPLOYMENT ERROR] Missing required environment variables:');
+  missing.forEach((key) => console.error(`   - ${key}`));
+  console.error('Please configure these variables in your Render Dashboard Environment settings.\n');
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
   }
-});
+}
 
 export default env;
