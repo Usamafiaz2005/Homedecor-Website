@@ -9,7 +9,6 @@ const categorySchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
-categorySchema.index({ slug: 1 });
 categorySchema.index({ parentCategory: 1 });
 
 export default mongoose.model('Category', categorySchema);
