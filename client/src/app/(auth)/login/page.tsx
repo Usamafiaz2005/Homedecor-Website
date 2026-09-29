@@ -31,11 +31,12 @@ function LoginForm() {
     setIsLoading(true);
     try {
       const response = await api.post('/auth/login', data);
-      setUser(response.data.user);
-      toast.success(`Welcome back, ${response.data.user.name.split(' ')[0]}`, {
+      const user = response.data.data?.user || response.data.user;
+      setUser(user);
+      toast.success(`Welcome back, ${user?.name?.split(' ')[0] || 'User'}`, {
         style: { background: '#4E342E', color: '#FAFAFA' }
       });
-      const callbackUrl = searchParams.get('callbackUrl') || '/';
+      const callbackUrl = searchParams.get('callbackUrl') || (user?.role === 'admin' ? '/admin' : '/');
       router.push(callbackUrl);
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Authentication failed');
