@@ -9,7 +9,6 @@ import { LayoutDashboard, Package, ShoppingBag, Users, Image as ImageIcon, Setti
 const sidebarLinks = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Products', href: '/admin/products', icon: Package },
-  { name: 'Categories', href: '/admin/categories', icon: Package },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
   { name: 'Customers', href: '/admin/customers', icon: Users },
   { name: 'CMS & Banners', href: '/admin/cms', icon: ImageIcon },

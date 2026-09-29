@@ -6,12 +6,12 @@ import { generateTokens, setAuthCookies } from '../utils/token';
 // @desc Register
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
     const existing = await User.findOne({ email });
     if (existing) return res.status(409).json({ message: 'Email already registered' });
 
-    const user = await User.create({ name, email, password });
-    const { accessToken, refreshToken } = generateTokens(user._id.toString());
+    const user = await User.create({ name, email, password, phone });
+    const { accessToken, refreshToken } = generateTokens(user._id.toString(), user.role);
 
     await RefreshToken.create({
       token: refreshToken,
@@ -24,7 +24,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     res.status(201).json({
       status: 'success',
       data: {
-        user: { _id: user._id, name: user.name, email: user.email, role: user.role }
+        user: { _id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone }
       }
     });
   } catch (error) { next(error); }
@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const { accessToken, refreshToken } = generateTokens(user._id.toString());
+    const { accessToken, refreshToken } = generateTokens(user._id.toString(), user.role);
 
     await RefreshToken.create({
       token: refreshToken,
@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     res.status(200).json({
       status: 'success',
       data: {
-        user: { _id: user._id, name: user.name, email: user.email, role: user.role }
+        user: { _id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone }
       }
     });
   } catch (error) { next(error); }
@@ -85,7 +85,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     const user = await User.findById(stored.user);
     if (!user) return res.status(401).json({ message: 'User not found' });
 
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user._id.toString());
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user._id.toString(), user.role);
 
     await RefreshToken.deleteOne({ token });
     await RefreshToken.create({
@@ -105,6 +105,30 @@ export const getMe = async (req: Request, res: Response, next: NextFunction) => 
     const user = await User.findById(req.user?.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.status(200).json({ status: 'success', data: { user } });
+  } catch (error) { next(error); }
+};
+
+// @desc Update My Profile (name, phone only — no role/email/password via this route)
+export const updateMe = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Whitelist only safe fields the user can change themselves
+    const { name, phone } = req.body;
+    const updates: { name?: string; phone?: string } = {};
+    if (name && typeof name === 'string' && name.trim().length >= 2) updates.name = name.trim();
+    if (phone !== undefined) updates.phone = phone;
+
+    const user = await User.findByIdAndUpdate(
+      req.user?.id,
+      updates,
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.status(200).json({
+      status: 'success',
+      data: { user: { _id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone } }
+    });
   } catch (error) { next(error); }
 };
 

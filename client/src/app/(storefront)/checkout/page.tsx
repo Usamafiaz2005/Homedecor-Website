@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+import { calculateShippingFee } from '@/constants/pakistan';
+
 const checkoutSchema = z.object({
   fullName: z.string().min(2, 'Name is required'),
   phone: z.string().regex(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$/, 'Invalid Pakistani number format.'),
@@ -34,9 +36,7 @@ export default function CheckoutPage() {
   const paymentMethod = watch('paymentMethod');
 
   const calculateShipping = () => {
-    if (cartTotal() > 100000) return 0;
-    if (selectedCity?.toLowerCase() === 'lahore') return 500;
-    return 1500;
+    return calculateShippingFee(selectedCity, cartTotal());
   };
 
   const onSubmit = async (data: CheckoutFormValues) => {

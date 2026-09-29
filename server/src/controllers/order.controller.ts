@@ -106,7 +106,7 @@ export const getAllOrders = async (req: Request, res: Response, next: NextFuncti
     }
 
     const orders = await Order.find(filter)
-      .populate('user', 'fullName email phone')
+      .populate('user', 'name email phone')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -127,7 +127,7 @@ export const getAllOrders = async (req: Request, res: Response, next: NextFuncti
 
 export const getOrderById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const order = await Order.findById(req.params.id).populate('user', 'fullName email phone');
+    const order = await Order.findById(req.params.id).populate('user', 'name email phone');
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }

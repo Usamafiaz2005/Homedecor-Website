@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, logout, refresh, getMe, getUsers, updateUserRole } from '../controllers/auth.controller';
+import { register, login, logout, refresh, getMe, updateMe, getUsers, updateUserRole } from '../controllers/auth.controller';
 import { protect, adminOnly } from '../middleware/auth.middleware';
 import { validate } from '../middleware/validate';
 import { registerSchema } from '../validators/auth.validator';
@@ -10,6 +10,7 @@ router.post('/login', login);
 router.post('/logout', logout);
 router.post('/refresh', refresh);
 router.get('/me', protect, getMe);
+router.patch('/me', protect, updateMe);
 
 // Admin Customer Management
 router.get('/users', protect, adminOnly, getUsers);

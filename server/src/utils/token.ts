@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import { Response } from 'express';
 import env from '../config/env';
 
-export const generateTokens = (userId: string) => {
-  const accessToken = jwt.sign({ id: userId }, env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
-  const refreshToken = jwt.sign({ id: userId }, env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+export const generateTokens = (userId: string, role: string = 'user') => {
+  const accessToken = jwt.sign({ id: userId, role }, env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
+  const refreshToken = jwt.sign({ id: userId, role }, env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
   return { accessToken, refreshToken };
 };
 
